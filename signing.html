@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .signup{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup">
+        <input type="text" id="fullname" placeholder="fullname">
+        <input type="email" id="userEmail" placeholder="Enter Email">
+        <input type="password" id="userPassword" placeholder="Enter Password">
+        <button id="upBtn">Sign Up</button>
+    </div>
+
+
+
+    <div class="signup">
+        <input type="email" id="userinEmail" placeholder="Enter Email">
+        <input type="password" id="userinPassword" placeholder="Enter Password">
+        <button id="inBtn">Sign Up</button>
+    </div>
+
+
+
+
+
+<script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+
+    const supabaseUrl = 'https://opjxgfjfjvcexhizvyar.supabase.co';
+    const supabaseKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wanhnZmpmanZjZXhoaXp2eWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI3ODMzMTUsImV4cCI6MjA0ODM1OTMxNX0.Vx5dbIopGNk2EU825CEPSVU5fIrlBp0d2yJi1fL_A80';
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+
+    const signUp = async () => {
+        let email = document.getElementById('userEmail').value
+        let fullname = document.getElementById('fullname').value
+        let password = document.getElementById('userPassword').value
+
+        const {data, error} = await supabase.auth.signUp({
+            email : email,
+            password : password,
+            options : {
+                data: {
+                    fullname : fullname
+                }
+            }
+        })
+        if(error){
+            console.error('Sign up Error:', error)
+        }else{
+            console.log('Successfull Sign Up:', data)
+            window.location.href = 'admin.html'
+        }
+    }
+
+
+    let signUpBtn = document.getElementById('upBtn')
+    signUpBtn.addEventListener('click', signUp)
+
+
+    const signIn = async () => {
+        let email = document.getElementById('userinEmail').value
+        let password = document.getElementById('userinPassword').value
+
+        const{data, error} = await supabase.auth.signInWithPassword({
+            email : email,
+            password : password
+        })
+        if(error){
+            console.error(error)
+        }else{
+            console.log('data');
+            window.location.href = 'admin.html'
+        }
+    }
+
+    let signInBtn = document.getElementById('inBtn')
+    signInBtn.addEventListener('click', signIn)
+
+</script>
+
+</body>
+</html>
