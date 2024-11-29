@@ -85,7 +85,7 @@ const writeBlog = async () => {
         
         // SAVE THE DETAILS TO THE DATABASE
         const{data:dbData, error:dbError} = await supabase
-        .from('BLOGS')
+        .from('Paean')
         .insert([
             {
                 blogContent : blogContent,
@@ -116,7 +116,7 @@ writeBlogBtn.addEventListener('click', writeBlog)
 const readBlog = async () => {
     let blogging = blogTitleIn.value
     const {data, error} = await supabase
-    .from('BLOGS')
+    .from('Paean')
     .select()
     .eq('blogTitle', blogging)
     if(error){
@@ -152,7 +152,7 @@ const updateBlog = async () => {
         alert('fill all empty spaces please')
     }else{
         const {data, error} = await supabase
-        .from('BLOGS')
+        .from('Paean')
         .update([
             {
                 blogContent : blogContent,
@@ -180,7 +180,7 @@ const deleteBlog = async () => {
     let blogTitle = blogTitleIn.value
 
     const{data, error} = await supabase
-    .from('BLOGS')
+    .from('Paean')
     .delete()
     .eq('blogTitle', blogTitle)
     
@@ -199,20 +199,18 @@ let mainDisplay = document.getElementById('allContents')
 // FETCH AND DISPLAY ALL CONTENTS
 const fetchAll = async () => {
     const {data, error} = await supabase
-    .from('BLOGS')
+    .from('Paean')
     .select()
     if(error){
         console.error(error)
     }else{
         data.forEach(element => {
-            // console.log(element)
             let blogImageFetched = element.blogImage
             let blogTitleFetched = element.blogTitle
             let slugFetched = element.Slug
             let blogContentFetched = element.blogContent
             let blogAuthorFetched = element.blogAuthor
             let blogDateFetched = element.blogDate
-            let blogIdFetched = element.id
 
 
             let newDiv = document.createElement('div')
@@ -227,22 +225,9 @@ const fetchAll = async () => {
                     <h3>${blogTitleFetched}</h3>
                     <p>${blogContentFetched} </p>
                 </div>
-                <div class="comment">
-                    <input type="text" id="commentName" placeholder="input name">
-                    <textarea id="commenting" placeholder="Enter Comment"></textarea>
-                     <button class="commentt">comment</button>
-                </div>
                 <button class="shareAcross">Share</button>
             `
             
-            newDiv.querySelector('.commentt').addEventListener('click', () => {
-                let mainComment = document.getElementById('commenting').value
-                let commentName = document.getElementById('commentName').value
-
-
-                
-                sendComment(mainComment, commentName, blogIdFetched)
-            })    
             newDiv.querySelector('.shareAcross').addEventListener('click', () => {
                 blogURL(slugFetched)
             })    
@@ -251,27 +236,6 @@ const fetchAll = async () => {
         // console.log(data);
     }
 }
-
-
-//  SENDING COMMENT
-
-    const sendComment = async(mainComment, commentName, blogIdFetched) => {
-        const {data, error} = await supabase
-        .from('COMMENTS')
-        .insert([
-            {
-                commenterName : commentName,
-                theComment : mainComment,
-                blog_id : blogIdFetched
-            }
-        ])
-        if(error){
-            console.error(error)
-        }else{
-            console.log('Comment made', data);
-        }
-    }
-
 
     // Generating shareable link
     function blogURL(slugFetched){
