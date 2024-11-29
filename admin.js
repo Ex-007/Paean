@@ -25,6 +25,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // THE INPUTS
 let blogTitleIn = document.getElementById('blogTitle')
+let blogCategoryIn = document.getElementById('blogCategory')
 let blogAuthorIn = document.getElementById('blogAuthor')
 let blogContentIn = document.getElementById('blogContent')
 let blogImageIn = document.getElementById('blogImage')
@@ -43,6 +44,7 @@ const writeBlog = async () => {
     let blogTitle = blogTitleIn.value
     let blogAuthor = blogAuthorIn.value
     let blogContent = blogContentIn.value
+    let blogCategory = blogCategoryIn.value
 
     // SLUGIFY THE TITLE
     function stringify(blogTitle){
@@ -58,7 +60,7 @@ const writeBlog = async () => {
 
     const currentDate = new Date().toISOString().split("T")[0];
 
-    if(blogTitle === '' || blogAuthor === '' || blogContent === ''){
+    if(blogTitle === '' || blogAuthor === '' || blogContent === '' || blogCategory === ''){
         alert('No field should be left empty')
         return
     }else{
@@ -89,6 +91,7 @@ const writeBlog = async () => {
         .insert([
             {
                 blogContent : blogContent,
+                blogCategory : blogCategory,
                 blogImage : fileUrl,
                 blogTitle : blogTitle,
                 blogAuthor : blogAuthor,
@@ -106,6 +109,7 @@ const writeBlog = async () => {
     blogTitleIn.value = ''
     blogAuthorIn.value = ''
     blogContentIn.value = ''
+    blogCategoryIn.value = ''
 }
 
 writeBlogBtn.addEventListener('click', writeBlog)
@@ -135,6 +139,7 @@ const updateBlog = async () => {
     let blogTitle = blogTitleIn.value
     let blogAuthor = blogAuthorIn.value
     let blogContent = blogContentIn.value
+    let blogCategory = blogAuthorIn.value
 
         // SLUGIFY THE TITLE
         function stringify(blogTitle){
@@ -148,7 +153,7 @@ const updateBlog = async () => {
             .replace(/^- |- $/g, '')
         }
 
-    if(blogTitle === '' || blogAuthor === '' || blogContent === ''){
+    if(blogTitle === '' || blogAuthor === '' || blogContent === '' || blogCategory === ''){
         alert('fill all empty spaces please')
     }else{
         const {data, error} = await supabase
@@ -156,6 +161,7 @@ const updateBlog = async () => {
         .update([
             {
                 blogContent : blogContent,
+                blogCategory : blogCategory,
                 blogTitle : blogTitle,
                 blogAuthor : blogAuthor,
                 Slug : stringify(blogTitle)
