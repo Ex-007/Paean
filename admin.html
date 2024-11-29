@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paean Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .inputDivs{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input{
+            width: 250px;
+            height: 30px;
+            border-radius: 30px;
+            border: 2px solid white;
+            outline: 2px solid black;
+            font-size: 18px;
+            padding: 5px;
+        }
+        textarea{
+            width: 250px;
+            height: 200px;
+            border-radius: 30px;
+            padding: 5px 10px 5px 5px;
+            font-size: 18px;
+        }
+        .actionButtons{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+        button{
+            border-radius: 10px;
+            padding: 5px;
+            margin: 5px;
+            width: 100px;
+            cursor: pointer;
+        }
+        #writeBlog{
+            background-color: green;
+            color: white;
+        }
+        #deleteBlog{
+            background-color: red;
+            color: white;
+        }
+        #updateBlog{
+            background-color: blue;
+            color: white;
+        }
+        #readBlog{
+            background-color: purple;
+            color: white;
+        }
+        .headed{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            color: white;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="headed">
+        <h3>Welcome back <span id="fullname">Agbebi Bidemi</span>!!!</h3>
+    </div>
+
+
+    <div class="inputDivs">
+        <input type="text" id="blogTitle" placeholder="Enter Blog Title">
+        <input type="text" id="blogAuthor" placeholder="Enter Your Name">
+        <textarea id="blogContent" placeholder="Enter the Blog Content here..."></textarea>
+        <label for="blogImage"><i class="fa-regular fa-image" style="font-size: 40px; cursor: pointer;"></i></label>
+        <input type="file" id="blogImage" style="display: none;">
+    </div>
+    <div class="actionButtons">
+        <button id="writeBlog">Write</button>
+        <button id="readBlog">Read</button>
+        <button id="updateBlog">Update</button>
+        <button id="deleteBlog">Delete</button>
+    </div>
+
+
+
+
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
