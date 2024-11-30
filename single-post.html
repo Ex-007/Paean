@@ -112,6 +112,7 @@
                                 <small class="small text-muted">January 19 2019
                                     <span class="px-2">-</span>
                                     <a href="#" class="text-muted">64 Comments</a>
+                                    
                                 </small>
                             </div>
                         </div>
@@ -305,6 +306,11 @@
                 let blogImage = data[0].blogImage
                 let blogTitle = data[0].blogTitle
                 let blogCategory = data[0].blogCategory
+                let blogIdFetched = data[0].id
+                let slugFetched = data[0].Slug
+
+                // console.log(data)
+
 
                 let blogCommentss = data[0].COMMENTS
 
@@ -339,28 +345,33 @@
                         
                         <h6 class="mt-5 mb-3 text-center"><a href="#" class="text-dark">Write Your Comment</a></h6>
                         <hr>
-                        <form>
+                        <div>
                             <div class="form-row">
                                 <div class="col-12 form-group">
                                     <textarea name="" id="" cols="30" rows="10" class="form-control"
                                         placeholder="Enter Your Comment Here"></textarea>
-                                </div>
-                                <div class="col-sm-4 form-group">
-                                    <input type="text" placeholder="Name" style="width: 300px; border: none;">
-                                </div>
-                                <div class="form-group col-12">
-                                    <button class="btn btn-primary btn-block">Post Comment</button>
+                                        <input type="text" class="commenterName" placeholder="Name" style="width: 300px; border: none;">
+                                        <button class="btn btn-primary btn-block">Post Comment</button>
+                                        <button class="share btn-primary btn-block" style="background-color: rgb(58, 58, 182); color: white;">Share Post</button>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                              
                 `
 
-                    mainContent.appendChild(newDiv)
+                mainContent.appendChild(newDiv)
+
+
+
+                    // SHARING THE BLOG
+            newDiv.querySelector('.share').addEventListener('click', () => {
+                    blogURL(slugFetched)
+            })
+
+            // FETCHING THE BLOG COMMENT
                 let commentDisplayBox = document.querySelector('#commentDisplayBox')
                 blogCommentss.forEach(commentElement => {
-                    // console.log(commentElement);
                     let newCommentDiv = document.createElement('div')
                     newCommentDiv.setAttribute('class', 'card-footer')
                     newCommentDiv.innerHTML = `
@@ -378,21 +389,82 @@
                     `
                     commentDisplayBox.appendChild(newCommentDiv)
                 });
+
+                // COMMENTING ON THE BLOG
+                newDiv.querySelector('.btn').addEventListener('click', async (event) => {
+                    const commentSection = event.target.closest('.col-12')
+                    
+                    const mainCommentInput = commentSection.querySelector('.form-control');
+                    const commentNameInput = commentSection.querySelector('.commenterName');
+                
+                    const mainComment = mainCommentInput.value;
+                    const commentName = commentNameInput.value;
+                    
+                    console.log('comment name:', commentName);
+                    console.log('comment:', mainComment);
+
+                     // Ensuring the values are passed correctly
+                    if (mainComment && commentName) {
+                        const isSuccessful = await sendComment(mainComment, commentName, blogIdFetched);
+                
+                        if (isSuccessful) {
+                            // Clear the fields after successful comment submission
+                            mainCommentInput.value = '';
+                            commentNameInput.value = '';
+                        }
+                    } else {
+                        console.error('Comment or Name is empty!');
+                    }
+                    
+                })
                 
             // console.log(data);
             }
         }
 
+
+        
+//  SENDING COMMENT
+
+    const sendComment = async(mainComment, commentName, blogIdFetched) => {
+        const {data, error} = await supabase
+        .from('COMMENTS')
+        .insert([
+            {
+                commenterName : commentName,
+                theComment : mainComment,
+                blog_id : blogIdFetched
+            }
+        ])
+        if(error){
+            alert(error.message)
+            console.error(error)
+            return false;
+        }else{
+            alert('comment made')
+            console.log('Comment made', data);
+            return true;
+        }
+    }
+
+
+    // SHARING THE POST
+    function blogURL(slugFetched){
+        const redirectUrl = `${window.location.origin}/single-post.html?slug=${slugFetched}`
+        navigator.clipboard.writeText(redirectUrl)
+        .then(() => {
+            alert('Blog link Copied')
+        })
+        .catch(error => {
+            console.error(error)
+        })
+    }
+
+
+
+
+
         readBlog()
-
-
-
-
-
-
-
-
-
 
 
 

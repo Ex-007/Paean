@@ -76,7 +76,7 @@ const writeBlog = async () => {
             console.error('Upload Error: ', uploadError.message)
             return;
         }
-        console.log('File Successfully Uploaded:', uploadData);
+        // console.log('File Successfully Uploaded:', uploadData);
 
         // GETTING BACK THE UPLOAD URL
         const {data:publicUrlData} = await supabase.storage
@@ -235,19 +235,33 @@ const fetchAll = async () => {
                 </div>
                 <div class="comment">
                     <input type="text" id="commentName" placeholder="input name">
-                    <textarea id="commenting" placeholder="Enter Comment"></textarea>
-                     <button class="commentt">comment</button>
+                    <textarea id="commenting" class="commenting" placeholder="Enter Comment"></textarea>
+                     <button class="commentt" class="commentt">comment</button>
                 </div>
                 <button class="shareAcross">Share</button>
             `
             
-            newDiv.querySelector('.commentt').addEventListener('click', () => {
-                let mainComment = document.getElementById('commenting').value
-                let commentName = document.getElementById('commentName').value
-
-
+            newDiv.querySelector('.commentt').addEventListener('click', async (event) => {
+                const commentSection = event.target.closest('.comment')
                 
-                sendComment(mainComment, commentName, blogIdFetched)
+                const mainCommentInput = commentSection.querySelector('.commenting');
+                const commentNameInput = commentSection.querySelector('#commentName');
+            
+                const mainComment = mainCommentInput.value;
+                const commentName = commentNameInput.value;
+            
+                // Ensure the values are passed correctly
+                if (mainComment && commentName) {
+                    const isSuccessful = await sendComment(mainComment, commentName, blogIdFetched);
+            
+                    if (isSuccessful) {
+                        // Clear the fields after successful comment submission
+                        mainCommentInput.value = '';
+                        commentNameInput.value = '';
+                    }
+                } else {
+                    console.error('Comment or Name is empty!');
+                }
             })    
             newDiv.querySelector('.shareAcross').addEventListener('click', () => {
                 blogURL(slugFetched)
@@ -273,8 +287,10 @@ const fetchAll = async () => {
         ])
         if(error){
             console.error(error)
+            return false;
         }else{
             console.log('Comment made', data);
+            return true;
         }
     }
 
