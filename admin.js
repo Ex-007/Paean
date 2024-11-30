@@ -23,6 +23,51 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // }
 
 
+
+supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN') {
+        console.log('User signed in:', session.user);
+    } else if (event === 'SIGNED_OUT') {
+        window.location.href = 'signing.html';
+    }
+});
+
+
+
+
+const getCurrentUser = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    
+    if (error) {
+        console.error('Error retrieving user session:', error);
+        return null;
+    }
+
+    if (data.session) {
+        const user = data.session.user;
+        console.log('Current signed-in user:', user);
+        return user; // Returns the current signed-in user's details
+    } else {
+        window.location.href = 'signing.html';
+        return null;
+    }
+};
+
+// Call the function
+getCurrentUser();
+
+
+
+
+
+
+
+
+
+
+
+
+
 // THE INPUTS
 let blogTitleIn = document.getElementById('blogTitle')
 let blogCategoryIn = document.getElementById('blogCategory')

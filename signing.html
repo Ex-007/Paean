@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Paean</title>
     <style>
         .signup{
             display: flex;
@@ -11,6 +11,20 @@
             justify-content: center;
             align-items: center;
             gap: 5px;
+            margin-top: 50px;
+        }
+        input{
+            width: 300px;
+            height: 30px;
+            border-radius: 30px;
+            padding: 5px;
+        }
+        button{
+            width: 300px;
+            height: 30px;
+            background-color: green;
+            color: white;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -27,7 +41,7 @@
     <div class="signup">
         <input type="email" id="userinEmail" placeholder="Enter Email">
         <input type="password" id="userinPassword" placeholder="Enter Password">
-        <button id="inBtn">Sign Up</button>
+        <button id="inBtn">Log In</button>
     </div>
 
 
@@ -62,7 +76,10 @@
             console.error('Sign up Error:', error)
         }else{
             console.log('Successfull Sign Up:', data)
-            window.location.href = 'admin.html'
+            setTimeout(() => {
+                window.location.href = 'admin.html'
+                
+            }, 2000);
         }
     }
 

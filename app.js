@@ -128,7 +128,7 @@ const instaPosts = async () => {
     if (error) {
         console.error('Error fetching recent blogs:', error);
     } else {
-        console.log('Recent Blogs:', data);
+        // console.log('Recent Blogs:', data);
 
         // Getting the featuredPost container
         const featuredPost = document.getElementById('instaPosters');
@@ -163,7 +163,61 @@ instaPosts()
 
 
 
+// Three latest posts for single-post
+let populationThree = document.getElementById('populationThree')
+const singlePost = async () => {
+    const { data, error } = await supabase
+        .from('BLOGS')
+        .select('id, created_at, Slug, blogImage, blogCategory, blogDate, blogContent')
+        .order('created_at', { ascending: false })
+        .limit(3);
 
+    if (error) {
+        console.error('Error fetching recent blogs:', error);
+    } else {
+        // console.log('Recent Blogs:', data);
+        
+        data.forEach(element => {
+
+
+            // SLICING/TRUNCATING THE BLOG CONTENT
+            const truncateContent = (content) => {
+                const words = content.split(' ');
+                const wordLimit = Math.ceil(words.length * 0.1);
+                return `${words.slice(0, wordLimit).join(' ')}...`;
+            };
+
+            // POPULATING THE FRONTEND
+            // let newDiv = document.createElement('div')
+            let newDiv = document.createElement('a')
+            newDiv.setAttribute('href', `single-post.html?slug=${element.Slug}`)
+            newDiv.setAttribute('class', 'col-md-6 col-lg-4')
+            newDiv.innerHTML = `
+                <div class="card mb-5">
+                    <div class="card-header p-0">
+                        <div class="blog-media">
+                            <img src="${element.blogImage}" alt="" class="w-100">
+                            <a href="#" class="badge badge-primary">${element.blogCategory}</a>
+                        </div>
+                    </div>
+                    <div class="card-body px-0">
+                        <h6 class="card-title mb-2"><a href="#" class="text-dark">${truncateContent(element.blogContent)}</a></h6>
+                        <small class="small text-muted">${element.blogDate}
+                            <span class="px-2">-</span>
+                        </small>
+                    </div>
+                </div>
+            
+            `
+            populationThree.appendChild(newDiv)
+        });
+
+
+
+    }
+};
+
+singlePost()
 
 
 
