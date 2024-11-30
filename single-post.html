@@ -88,7 +88,10 @@
             <!-- Sidebar -->
             <div class="page-sidebar">
                 <h6 class=" ">Tags</h6>
-                <a href="javascript:void(0)" class="badge badge-primary m-1">#Education</a>
+                <div id="tagsIn"></div>
+
+
+                <!-- <a href="javascript:void(0)" class="badge badge-primary m-1">#Education</a>
                 <a href="javascript:void(0)" class="badge badge-primary m-1">#Christianity</a>
                 <a href="javascript:void(0)" class="badge badge-primary m-1">#Religion</a>
                 <a href="javascript:void(0)" class="badge badge-primary m-1">#Muslim</a>
@@ -97,7 +100,7 @@
                 <a href="javascript:void(0)" class="badge badge-primary m-1">#War</a>
                 <a href="javascript:void(0)" class="badge badge-primary m-1">#Donation</a>
                 <a href="javascript:void(0)" class="badge badge-primary m-1">#Technology</a>
-                <a href="javascript:void(0)" class="badge badge-primary m-1">#Finance</a>
+                <a href="javascript:void(0)" class="badge badge-primary m-1">#Finance</a> -->
 
                 <div class="ad-card d-flex text-center align-items-center justify-content-center mt-4">
                     <span href="#" class="font-weight-bold">ADS</span>
@@ -346,9 +349,39 @@
         readBlog()
 
 
+// FETCHING THE CATEGORIES
+let tagsIn = document.getElementById('tagsIn')
+        const fetchAllCategories = async () => {
+            const { data, error } = await supabase
+            .from('BLOGS')
+            .select('blogCategory')
+            // .distinct(); 
 
+            if (error) {
+                console.error('Error fetching categories:', error);
+                return [];
+            }
 
+                console.log('Categories:', data);
+                return data; 
+            };
 
+            // Usage
+            fetchAllCategories()
+            .then((categories) => {
+            // Handle the categories data
+            categories.forEach(category => {
+                let newTag = document.createElement('div')
+                newTag.innerHTML = `
+                    <a href="javascript:void(0)" class="badge badge-primary m-1">${category.blogCategory}</a>
+                `
+                // console.log(category.blogCategory)
+                tagsIn.appendChild(newTag)
+            }
+        );
+        });
+
+        fetchAllCategories()
 
 
 

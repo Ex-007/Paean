@@ -11788,4 +11788,10 @@ section .section-secondary-title {
     grid-template-columns: 50fr 50fr;
     gap: 15px;
   }
+  #relevantTag{
+    display: grid;
+    align-items: center;
+    grid-template-columns: 50fr 50fr;
+    gap: 15px;
+  }
 }
