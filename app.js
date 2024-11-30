@@ -116,8 +116,50 @@ const longPost = async () => {
 longPost()
 
 
+// THE INSTAGRAM POSTS
 
+const instaPosts = async () => {
+    const { data, error } = await supabase
+        .from('INSTAGRAM')
+        .select('id, instaLink, created_at, instaPhoto')
+        .order('created_at', { ascending: false })
+        .limit(6);
 
+    if (error) {
+        console.error('Error fetching recent blogs:', error);
+    } else {
+        console.log('Recent Blogs:', data);
+
+        // Getting the featuredPost container
+        const featuredPost = document.getElementById('instaPosters');
+
+        // Clearing existing content
+        featuredPost.innerHTML = `
+            <div class="instagram-wrapper mt-5">
+                <div class="ig-id">
+                    <a href="https://www.instagram.com/akinwumi8767?igsh=YzljYTk1ODg3Zg==">Follow Paean On Instagram</a>
+                </div>
+            </div>
+        `;
+
+        // Calling the Appending Container
+        const featurePostsContainer = featuredPost.querySelector('.instagram-wrapper');
+
+        // Populating Dynamically
+        data.forEach(element => {
+            let newDiv = document.createElement('a');
+            newDiv.setAttribute('href', `single-post.html?slug=${element.Slug}`); // Dynamic href
+            newDiv.setAttribute('class', 'feature-post-item');
+            newDiv.innerHTML = `
+                <img src="${element.instaPhoto}" class="w-100" alt="">
+            `;
+
+            featurePostsContainer.appendChild(newDiv);
+        });
+    }
+};
+
+instaPosts()
 
 
 

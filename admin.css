@@ -1,0 +1,158 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.headed{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    background-color: black;
+    color: white;
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+#fullname{
+    color: goldenrod;
+}
+.selection{
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: black;
+    color: white;
+}
+.selection a{
+    color: white;
+    text-decoration: none;
+    border: 2px solid white;
+    padding: 10px;
+    border-radius: 30px;
+}
+
+.instag{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.inputDivs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.actionButtons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+}
+button{
+    width: 70px;
+    height: 30px;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+
+#writeInsta:hover, #writeBlog:hover, #updateInsta:hover, #updateBlog:hover, #readInsta:hover, #readBlog:hover, #deleteInsta:hover, #deleteBlog:hover{
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+}
+#writeInsta, #writeBlog{
+    background-color: green;
+    color: white;
+}
+
+
+#deleteInsta, #deleteBlog{
+    background-color: red;
+    color: white;
+}
+
+#updateInsta, #updateBlog{
+    background-color: purple;
+    color: white;
+}
+
+#readInsta, #readBlog{
+    background-color: blue;
+    color: white;
+}
+
+#instag, #webs{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+input{
+    width: 300px;
+    height: 30px;
+    border-radius: 15px;
+    padding: 5px;
+}
+
+textarea{
+    width: 300px;
+    height: 130px;
+    padding: 5px;
+    border: 2px solid goldenrod;
+}
+
+.allContents{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+.postedBlog{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.postedBlog img{
+    width: 300px;
+}
+.comment{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+}
+.shareAcross{
+    background-color: blue;
+    color: white;
+}
+.commentt{
+    background-color: rgb(16, 74, 9);
+    color: white;
+}
+
+.dateAndAuth{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-style: italic;
+}

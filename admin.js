@@ -227,9 +227,12 @@ const fetchAll = async () => {
                 <div class="imgTab">
                     <img src="${blogImageFetched}" alt="avatar">
                 </div>
-                <div class="others">
+                <div class="dateAndAuth">
                     <h3>${blogDateFetched}</h3>
                     <h3>${blogAuthorFetched}</h3>
+                </div>
+
+                <div class="others">
                     <h3>${blogTitleFetched}</h3>
                     <p>${blogContentFetched} </p>
                 </div>
@@ -312,3 +315,139 @@ const fetchAll = async () => {
 
 fetchAll()
 
+
+
+
+
+// INSTAGRAM POSTS
+let instaLinkIn = document.getElementById('instaLink')
+let instaImage = document.getElementById('instaImage')
+// BUTTONS
+let writeInsta = document.getElementById('writeInsta')
+let readInsta = document.getElementById('readInsta')
+let updateInsta = document.getElementById('updateInsta')
+let deleteInsta = document.getElementById('deleteInsta')
+
+
+
+// INSTA WRITE
+const writeInstaFunct = async () => {
+    let instaLink = instaLinkIn.value
+
+
+    const currentDate = new Date().toISOString().split("T")[0];
+
+    if(instaLink === ''){
+        alert('No field should be left empty')
+        return
+    }else{
+
+        let file = instaImage.files[0]
+        // console.log(file)
+        var fileName = file.name
+        const filePath = `BLOG/${fileName}`
+        const{data:uploadData, error:uploadError} = await supabase.storage
+        .from('paean')
+        .upload(filePath, file)
+        if(uploadError){
+            console.error('Upload Error: ', uploadError.message)
+            return;
+        }
+        // console.log('File Successfully Uploaded:', uploadData);
+
+        // GETTING BACK THE UPLOAD URL
+        const {data:publicUrlData} = await supabase.storage
+        .from('paean')
+        .getPublicUrl(filePath)
+        const fileUrl = publicUrlData.publicUrl
+        // console.log('public url:', fileUrl);
+        
+        // SAVE THE DETAILS TO THE DATABASE
+        const{data:dbData, error:dbError} = await supabase
+        .from('INSTAGRAM')
+        .insert([
+            {
+                blogContent : instaLink,
+                blogImage : fileUrl,
+                instaDate : currentDate
+            }
+        ])
+        if(dbError){
+            alert('Database Error:', dbError.message)
+        }else{
+            alert('Post Successful:', dbData)
+        }
+        
+    }
+    instaLinkIn.value = ''
+}
+
+writeInsta.addEventListener('click', writeInstaFunct)
+
+
+
+// READING THE INSTA POST
+const readInstaFunct = async () => {
+    let instaLink = instaLinkIn.value
+    const {data, error} = await supabase
+    .from('BLOGS')
+    .select()
+    .eq('instaLink', instaLink)
+    if(error){
+        console.error(error)
+    }else{
+        console.log(data);
+    }
+}
+
+readInsta.addEventListener('click', readInstaFunct)
+
+
+
+// UPDATING THE INSTA POST
+const updateInstaFunct = async () => {
+    let instaLink = instaLinkIn.value
+
+
+    if(instaLink === ''){
+        alert('fill all empty spaces please')
+    }else{
+        const {data, error} = await supabase
+        .from('INSTAGRAM')
+        .update([
+            {
+                instaLink : instaLink,
+            }
+        ])
+        .eq('instaLink', instaLink)
+        if(error){
+            alert('Updating error:', error.message)
+        }else{
+            alert('Document Updated');
+            
+        }
+
+    }
+}
+
+updateInsta.addEventListener('click', updateInstaFunct)
+
+// DELETING THE INSTA POST
+
+const deleteInstaFunct = async () => {
+    let instaLink = instaLinkIn.value
+
+    const{data, error} = await supabase
+    .from('INSTAGRAM')
+    .delete()
+    .eq('instaLink', instaLink)
+    
+    if(error){
+        alert('Error Deleting:', error.message)
+    }else{
+        alert('Document Deleted')
+        // console.log(data)
+    }
+}
+
+deleteInsta.addEventListener('click', deleteInstaFunct)
