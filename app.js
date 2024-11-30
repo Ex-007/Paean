@@ -220,5 +220,64 @@ const singlePost = async () => {
 singlePost()
 
 
+// POPULATING THE LOADED/ALL BLOGS PAGE
+let populationAll = document.getElementById('populationAll')
+const loadedAll = async () => {
+    const { data, error } = await supabase
+        .from('BLOGS')
+        .select('id, blogTitle, created_at, Slug, blogImage, blogCategory, blogDate, blogContent, blogAuthor')
+        .order('created_at', { ascending: false })
+        // .limit(7);
+
+    if (error) {
+        console.error('Error fetching recent blogs:', error);
+    } else {
+        // console.log('Recent Blogs:', data);
+        
+        data.forEach(element => {
+
+
+            // SLICING/TRUNCATING THE BLOG CONTENT
+            const truncateContent = (content) => {
+                const words = content.split(' ');
+                const wordLimit = Math.ceil(words.length * 0.1);
+                return `${words.slice(0, wordLimit).join(' ')}...`;
+            };
+
+            // POPULATING THE FRONTEND
+            let newDiv = document.createElement('div')
+            newDiv.setAttribute('class', 'card')
+            newDiv.innerHTML = `
+            
+               <div class="card-header text-center">
+                        <h5 class="card-title">${element.blogTitle}</h5> 
+                        <small class="small text-muted">${element.blogDate} 
+                            <span class="px-2">-</span>
+                        </small>
+                </div>
+                <div class="card-body">
+                        <div class="blog-media">
+                            <img src="${element.blogImage}" alt="" class="w-100">
+                            <a href="#" class="badge badge-primary">${element.blogCategory}</a>     
+                        </div>  
+                        <p class="my-3">${truncateContent(element.blogContent)}</p>
+                </div>
+                    
+                <div class="card-footer d-flex justify-content-between align-items-center flex-basis-0">
+                        <button class="btn btn-primary circle-35 mr-4"><i class="ti-back-right"></i></button>
+                        <a href="${window.location.origin}/single-post.html?slug=${element.Slug}" class="btn btn-outline-dark btn-sm">READ MORE</a>
+                        <a href="#" class="text-dark small text-muted">By : ${element.blogAuthor}</a>
+                </div>             
+            
+            `
+            populationAll.appendChild(newDiv)
+        });
+
+
+
+    }
+};
+
+loadedAll()
 
 

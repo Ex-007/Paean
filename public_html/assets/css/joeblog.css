@@ -11782,7 +11782,7 @@ section .section-secondary-title {
 }
 
 @media (min-width: 768px) {
-  #population{
+  #population, #populationAll{
     display: grid;
     align-items: center;
     grid-template-columns: 50fr 50fr;

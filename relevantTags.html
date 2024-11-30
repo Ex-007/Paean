@@ -5,7 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Paean Blog Website">
     <meta name="author" content="ABTech">
-    <title>Paean | Home | Blogs</title>
+    <link rel="icon" href="./public_html/assets/imgs/logo.png" type="image/gif" />
+    <meta property="og:title" content="Paean Blog Website">
+    <meta property="og:description" content="This is the official website for Paean Blog Posts">
+    <meta property="og:image" content="./public_html/assets/imgs/logo.png">
+    <meta property="og:url" content="https://paean.vercel.app">
+    <meta property="og:type" content="Blogs">
+    <title>Paean | Tag | Blogs</title>
     <!-- font icons -->
     <link rel="stylesheet" href="./public_html/assets/vendors/themify-icons/css/themify-icons.css">
     <!-- Bootstrap + JoeBLog main styles -->
@@ -67,7 +73,6 @@
             <div class="page-content" id="relevantTag">
             </div>
         </div>
-        <button class="btn btn-primary btn-block my-4">Load More Posts</button>
     </div>
 
 
@@ -126,29 +131,82 @@
     <!-- populating js -->
      <!-- <script type="module" src="app.js"></script> -->
      <script type="module">
-        const fetchAllCategories = async () => {
-        const { data, error } = await supabase
-        .from('BLOGS')
-        .select('blogCategory')
-        .distinct(); 
+         // THE CONTENTS SPEARHEAD
+         import { createClient } from 'https://esm.sh/@supabase/supabase-js';
 
-        if (error) {
-        console.error('Error fetching categories:', error);
-        return [];
+         const supabaseUrl = 'https://opjxgfjfjvcexhizvyar.supabase.co';
+         const supabaseKey =
+         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9wanhnZmpmanZjZXhoaXp2eWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI3ODMzMTUsImV4cCI6MjA0ODM1OTMxNX0.Vx5dbIopGNk2EU825CEPSVU5fIrlBp0d2yJi1fL_A80';
+
+         const supabase = createClient(supabaseUrl, supabaseKey);
+
+
+         let relevantTag = document.getElementById('relevantTag')
+        const urlParameters = new URLSearchParams(window.location.search)
+        const comingCat = urlParameters.get('category')
+
+        const readCategories = async ()  => {
+            const {data, error} = await supabase
+            .from('BLOGS')
+            .select()
+            .eq('blogCategory', comingCat)
+
+            if(error){
+                console.error(error)
+            }else{
+
+                data.forEach(element => {
+
+                    const truncateContent = (content) => {
+                        const words = content.split(' ');
+                        const wordLimit = Math.ceil(words.length * 0.1);
+                        return `${words.slice(0, wordLimit).join(' ')}...`;
+                    };
+
+                    // POPULATING THE FRONTEND
+                    let newDiv = document.createElement('div')
+                    newDiv.setAttribute('class', 'card')
+                    newDiv.innerHTML = `
+                    
+                        <div class="card-header text-center">
+                            <h5 class="card-title">${element.blogTitle}</h5>
+                            <small class="small text-muted">${element.blogDate}
+                                <span class="px-2">-</span>
+                            </small>
+                        </div>
+                        <div class="card-body">
+                            <div class="blog-media">
+                                <img src="${element.blogImage}" alt="" class="w-100">
+                                <a href="#" class="badge badge-primary">${element.blogCategory}</a>
+                            </div>
+                            <p class="my-3">${truncateContent(element.blogContent)}</p>
+                        </div>
+
+                        <div
+                            class="card-footer d-flex justify-content-between align-items-center flex-basis-0">
+                            <button class="btn btn-primary circle-35 mr-4"><i
+                                    class="ti-back-right"></i></button>
+                            <a href="${window.location.origin}/single-post.html?slug=${element.Slug}"
+                                class="btn btn-outline-dark btn-sm">READ MORE</a>
+                            <a href="#" class="text-dark small text-muted">By : ${element.blogAuthor}</a>
+                        </div>
+                    
+                    `
+                    relevantTag.appendChild(newDiv)
+                });
+
+
+
+
+
+
+
+
+                console.log(data)
+            }
         }
 
-        console.log('Categories:', data);
-        return data; 
-        };
-
-        // Usage
-        fetchAllCategories()
-        .then((categories) => {
-        // Handle the categories data
-        categories.forEach(category => console.log(category.blogCategory));
-        });
-
-
+        readCategories()
 
      </script>
 

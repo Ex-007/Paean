@@ -26,7 +26,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 supabase.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN') {
-        console.log('User signed in:', session.user);
+        // console.log('User signed in:', session.user);
     } else if (event === 'SIGNED_OUT') {
         window.location.href = 'signing.html';
     }
@@ -45,7 +45,10 @@ const getCurrentUser = async () => {
 
     if (data.session) {
         const user = data.session.user;
-        console.log('Current signed-in user:', user);
+        let userName = user.identities[0].identity_data.fullname
+        let nameOut = document.getElementById('fullname')
+        nameOut.textContent = userName
+        // console.log('Current signed-in user:', user);
         return user; // Returns the current signed-in user's details
     } else {
         window.location.href = 'signing.html';

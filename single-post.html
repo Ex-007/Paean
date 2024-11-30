@@ -7,6 +7,13 @@
     <meta name="description" content="Paean Blog Website">
     <meta name="author" content="ABTech">
     <title>Paean | Blog Post</title>
+
+    <link rel="icon" href="./public_html/assets/imgs/logo.png" type="image/gif" />
+    <meta property="og:title" content="Paean Blog Website">
+    <meta property="og:description" content="This is the official website for Paean Blog Posts">
+    <meta property="og:image" content="./public_html/assets/imgs/logo.png">
+    <meta property="og:url" content="https://paean.vercel.app">
+    <meta property="og:type" content="Blogs">
     <!-- font icons -->
     <link rel="stylesheet" href="./public_html/assets/vendors/themify-icons/css/themify-icons.css">
     <!-- Bootstrap + JoeBLog main styles -->
@@ -62,7 +69,7 @@
 
     <!-- Page Header -->
     <header class="page-header page-header-mini">
-        <h1 class="title">Delivering Contented Blogs</h1>
+        <h1 class="title">Contented Blogs</h1>
         <ol class="breadcrumb pb-0">
             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">Paean Blog</li>
@@ -89,19 +96,7 @@
             <div class="page-sidebar">
                 <h6 class=" ">Tags</h6>
                 <div id="tagsIn"></div>
-
-
-                <!-- <a href="javascript:void(0)" class="badge badge-primary m-1">#Education</a>
-                <a href="javascript:void(0)" class="badge badge-primary m-1">#Christianity</a>
-                <a href="javascript:void(0)" class="badge badge-primary m-1">#Religion</a>
-                <a href="javascript:void(0)" class="badge badge-primary m-1">#Muslim</a>
-                <a href="javascript:void(0)" class="badge badge-primary m-1">#Animal</a>
-                <a href="javascript:void(0)" class="badge badge-primary m-1">#Politics</a>
-                <a href="javascript:void(0)" class="badge badge-primary m-1">#War</a>
-                <a href="javascript:void(0)" class="badge badge-primary m-1">#Donation</a>
-                <a href="javascript:void(0)" class="badge badge-primary m-1">#Technology</a>
-                <a href="javascript:void(0)" class="badge badge-primary m-1">#Finance</a> -->
-
+                
                 <div class="ad-card d-flex text-center align-items-center justify-content-center mt-4">
                     <span href="#" class="font-weight-bold">ADS</span>
                 </div>
@@ -362,7 +357,7 @@ let tagsIn = document.getElementById('tagsIn')
                 return [];
             }
 
-                console.log('Categories:', data);
+                // console.log('Categories:', data);
                 return data; 
             };
 
@@ -373,7 +368,7 @@ let tagsIn = document.getElementById('tagsIn')
             categories.forEach(category => {
                 let newTag = document.createElement('div')
                 newTag.innerHTML = `
-                    <a href="javascript:void(0)" class="badge badge-primary m-1">${category.blogCategory}</a>
+                    <a href="${window.location.origin}/relevantTags.html?category=${category.blogCategory}" class="badge badge-primary m-1">${category.blogCategory}</a>
                 `
                 // console.log(category.blogCategory)
                 tagsIn.appendChild(newTag)
@@ -383,7 +378,7 @@ let tagsIn = document.getElementById('tagsIn')
 
         fetchAllCategories()
 
-
+        // single-post.html?slug=${element.Slug}
 
 
 
