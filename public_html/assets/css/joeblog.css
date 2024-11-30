@@ -11780,3 +11780,12 @@ section .section-secondary-title {
   opacity: .7;
   margin-bottom: 15px;
 }
+
+@media (min-width: 768px) {
+  #population{
+    display: grid;
+    align-items: center;
+    grid-template-columns: 50fr 50fr;
+    gap: 15px;
+  }
+}
