@@ -250,6 +250,35 @@ deleteBlogBtn.addEventListener('click', deleteBlog)
 
 
 let mainDisplay = document.getElementById('allContents')
+
+
+
+
+
+// subscribing to realtime events
+
+const channels = supabase.channel('custom-all-channel')
+  .on(
+    'postgres_changes',
+    { event: '*', schema: 'public', table: 'BLOGS' },
+    (payload) => {
+      console.log('Change received!', payload)
+    }
+  )
+  .subscribe()
+
+// https://x.com/OracleTechie/status/1863091199441039834?t=5uNBs6fHP6W-jy5DiUcwuQ&s=19
+
+
+
+
+
+
+
+
+
+
+
 // FETCH AND DISPLAY ALL CONTENTS
 const fetchAll = async () => {
     const {data, error} = await supabase
@@ -391,8 +420,11 @@ const writeInstaFunct = async () => {
     }else{
 
         let file = instaImage.files[0]
-        // console.log(file)
+        console.log(file)
+
+        
         var fileName = file.name
+        
         const filePath = `BLOG/${fileName}`
         const{data:uploadData, error:uploadError} = await supabase.storage
         .from('paean')
@@ -415,9 +447,8 @@ const writeInstaFunct = async () => {
         .from('INSTAGRAM')
         .insert([
             {
-                blogContent : instaLink,
-                blogImage : fileUrl,
-                instaDate : currentDate
+                instaLink : instaLink,
+                instaPhoto : fileUrl,
             }
         ])
         if(dbError){
