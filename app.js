@@ -137,7 +137,7 @@ const instaPosts = async () => {
         featuredPost.innerHTML = `
             <div class="instagram-wrapper mt-5">
                 <div class="ig-id">
-                    <a href="https://www.instagram.com/akinwumi8767?igsh=YzljYTk1ODg3Zg==">Follow Paean On Instagram</a>
+                    <a href="https://www.instagram.com/akinwumi8767?igsh=YzljYTk1ODg3Zg==">Paean On 'gram</a>
                 </div>
             </div>
         `;
