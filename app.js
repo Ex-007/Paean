@@ -148,7 +148,7 @@ const instaPosts = async () => {
         // Populating Dynamically
         data.forEach(element => {
             let newDiv = document.createElement('a');
-            newDiv.setAttribute('href', `single-post.html?slug=${element.Slug}`); // Dynamic href
+            newDiv.setAttribute('href', `${element.instaLink}`); // Dynamic href
             newDiv.setAttribute('class', 'feature-post-item');
             newDiv.innerHTML = `
                 <img src="${element.instaPhoto}" class="w-100" alt="">
