@@ -131,14 +131,18 @@
 
         const supabase = createClient(supabaseUrl, supabaseKey);
 
+        // http://127.0.0.1:5500/single-post.html?date=2024-12-01&id=11&slug=the-next-frontier-space-exploration-in-the-21st-century
         // http://127.0.0.1:5500/single-post.html?slug=the-new-test
         // GET SLUG FROM THE URL
         let mainContent = document.getElementById('mainContent')
         const urlParameters = new URLSearchParams(window.location.search)
         const slug = urlParameters.get('slug')
+        const dated = urlParameters.get('date')
+        const idd = urlParameters.get('id')
 
         // FUNCTION TO FETCH THE BLOGS
         const readBlog = async () => {
+
             const {data, error} = await supabase
             .from('BLOGS')
             .select(`
@@ -146,6 +150,8 @@
                 COMMENTS(*)
             `)
             .eq('Slug', slug)
+            .eq('id', idd)
+            .eq('blogDate', dated)
 
             if(error){
             console.error(error)
@@ -217,7 +223,7 @@
 
                     // SHARING THE BLOG
             newDiv.querySelector('.share').addEventListener('click', () => {
-                    blogURL(slugFetched)
+                    blogURL(slugFetched, blogDate, blogIdFetched)
             })
 
             // FETCHING THE BLOG COMMENT
@@ -300,8 +306,8 @@
 
 
     // SHARING THE POST
-    function blogURL(slugFetched){
-        const redirectUrl = `${window.location.origin}/single-post.html?slug=${slugFetched}`
+    function blogURL(slugFetched, blogDate, blogIdFetched){
+        const redirectUrl = `${window.location.origin}/single-post.html?date=${blogDate}&id=${blogIdFetched}&slug=${slugFetched}`
         navigator.clipboard.writeText(redirectUrl)
         .then(() => {
             alert('Blog link Copied')
@@ -320,35 +326,35 @@
 
 // FETCHING THE CATEGORIES
 let tagsIn = document.getElementById('tagsIn')
-        const fetchAllCategories = async () => {
-            const { data, error } = await supabase
-            .from('BLOGS')
-            .select('blogCategory')
-            // .distinct(); 
 
-            if (error) {
-                console.error('Error fetching categories:', error);
-                return [];
-            }
+const fetchAllCategories = async () => {
+    const { data, error } = await supabase
+        .from('BLOGS')
+        .select('blogCategory');
 
-                // console.log('Categories:', data);
-                return data; 
-            };
+    if (error) {
+        console.error('Error fetching categories:', error);
+        return [];
+    }
 
-            // Usage
-            fetchAllCategories()
-            .then((categories) => {
-            // Handle the categories data
-            categories.forEach(category => {
-                let newTag = document.createElement('div')
-                newTag.innerHTML = `
-                    <a href="${window.location.origin}/relevantTags.html?category=${category.blogCategory}" class="badge badge-primary m-1">${category.blogCategory}</a>
-                `
-                // console.log(category.blogCategory)
-                tagsIn.appendChild(newTag)
-            }
-        );
+    // Deduplicate categories
+    const uniqueCategories = Array.from(new Set(data.map(item => item.blogCategory)));
+    
+    return uniqueCategories;
+};
+
+// Usage
+fetchAllCategories()
+    .then((categories) => {
+        // Handle the categories data
+        categories.forEach(category => {
+            let newTag = document.createElement('div');
+            newTag.innerHTML = `
+                <a href="${window.location.origin}/relevantTags.html?category=${category}" class="badge badge-primary m-1">${category}</a>
+            `;
+            tagsIn.appendChild(newTag);
         });
+    });
 
         fetchAllCategories()
 

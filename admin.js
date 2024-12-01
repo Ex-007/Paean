@@ -344,7 +344,8 @@ const fetchAll = async () => {
                 }
             })    
             newDiv.querySelector('.shareAcross').addEventListener('click', () => {
-                blogURL(slugFetched)
+                // blogURL(slugFetched)
+                blogURL(slugFetched, blogDateFetched, blogIdFetched)
             })    
             mainDisplay.appendChild(newDiv)
         });
@@ -374,10 +375,11 @@ const fetchAll = async () => {
         }
     }
 
+    // http://127.0.0.1:5500/single-post.html?date=2024-12-01&id=11&slug=the-next-frontier-space-exploration-in-the-21st-century
 
     // Generating shareable link
-    function blogURL(slugFetched){
-        const redirectUrl = `${window.location.origin}/single-post.html?slug=${slugFetched}`
+    function blogURL(slugFetched, blogDateFetched, blogIdFetched){
+        const redirectUrl = `${window.location.origin}/single-post.html?date=${blogDateFetched}&id=${blogIdFetched}&slug=${slugFetched}`
         navigator.clipboard.writeText(redirectUrl)
         .then(() => {
             alert('Blog link Copied')
@@ -386,9 +388,18 @@ const fetchAll = async () => {
             console.error(error)
         })
     }
-
-    // http://127.0.0.1:5500/single-post.html?slug=the-new-life
-    // http://127.0.0.1:5500/single-post.html?slug=the-rise-of-artificial-intelligence
+    // function blogURL(slugFetched, blogDateFetched, blogIdFetched) {
+    //     const redirectUrl = `${window.location.origin}/single-post.html/${blogDateFetched}/${blogIdFetched}/${slugFetched}`;
+        
+    //     navigator.clipboard.writeText(redirectUrl)
+    //         .then(() => {
+    //             alert('Blog link Copied');
+    //         })
+    //         .catch(error => {
+    //             console.error(error);
+    //         });
+    // }
+    
 
 fetchAll()
 
