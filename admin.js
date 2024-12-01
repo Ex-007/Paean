@@ -345,7 +345,7 @@ const fetchAll = async () => {
             })    
             newDiv.querySelector('.shareAcross').addEventListener('click', () => {
                 // blogURL(slugFetched)
-                blogURL(slugFetched, blogDateFetched, blogIdFetched)
+                blogURL(slugFetched)
             })    
             mainDisplay.appendChild(newDiv)
         });
@@ -378,8 +378,8 @@ const fetchAll = async () => {
     // http://127.0.0.1:5500/single-post.html?date=2024-12-01&id=11&slug=the-next-frontier-space-exploration-in-the-21st-century
 
     // Generating shareable link
-    function blogURL(slugFetched, blogDateFetched, blogIdFetched){
-        const redirectUrl = `${window.location.origin}/single-post.html?date=${blogDateFetched}&id=${blogIdFetched}&slug=${slugFetched}`
+    function blogURL(slugFetched){
+        const redirectUrl = `${window.location.origin}/single-post.html?slug=${slugFetched}`
         navigator.clipboard.writeText(redirectUrl)
         .then(() => {
             alert('Blog link Copied')

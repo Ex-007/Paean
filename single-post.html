@@ -137,8 +137,10 @@
         let mainContent = document.getElementById('mainContent')
         const urlParameters = new URLSearchParams(window.location.search)
         const slug = urlParameters.get('slug')
-        const dated = urlParameters.get('date')
-        const idd = urlParameters.get('id')
+        // const dated = urlParameters.get('date')
+        // const idd = urlParameters.get('id')
+
+        // console.log(slug, dated, idd)
 
         // FUNCTION TO FETCH THE BLOGS
         const readBlog = async () => {
@@ -150,8 +152,8 @@
                 COMMENTS(*)
             `)
             .eq('Slug', slug)
-            .eq('id', idd)
-            .eq('blogDate', dated)
+            // .eq('id', idd)
+            // .eq('blogDate', dated)
 
             if(error){
             console.error(error)
@@ -223,7 +225,8 @@
 
                     // SHARING THE BLOG
             newDiv.querySelector('.share').addEventListener('click', () => {
-                    blogURL(slugFetched, blogDate, blogIdFetched)
+                    blogURL(slugFetched)
+                    // blogURL(slugFetched, blogDate, blogIdFetched)
             })
 
             // FETCHING THE BLOG COMMENT
@@ -306,8 +309,8 @@
 
 
     // SHARING THE POST
-    function blogURL(slugFetched, blogDate, blogIdFetched){
-        const redirectUrl = `${window.location.origin}/single-post.html?date=${blogDate}&id=${blogIdFetched}&slug=${slugFetched}`
+    function blogURL(slugFetched){
+        const redirectUrl = `${window.location.origin}/single-post.html?slug=${slugFetched}`
         navigator.clipboard.writeText(redirectUrl)
         .then(() => {
             alert('Blog link Copied')
